@@ -1,0 +1,22 @@
+[project]
+name = "autogen-practices"
+version = "0.1.0"
+description = "AutoGen group chat (investigador + crítico + moderador) sobre Groq"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "autogen-agentchat>=0.7",
+    "autogen-ext[openai]>=0.7",
+    "python-dotenv>=1.0",
+]
+
+[tool.poetry]
+package-mode = false
+
+[[tool.poetry.source]]
+name = "fury"
+url = "https://pypi.artifacts.furycloud.io/simple"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
