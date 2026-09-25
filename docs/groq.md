@@ -30,12 +30,18 @@ AutoGen tiene una tabla con las capacidades de los modelos de OpenAI. Para cualq
 | Clave | Valor acá | Significado |
 |---|---|---|
 | `vision` | `False` | ¿Acepta imágenes? |
-| `function_calling` | `True` | ¿Puede usar herramientas (*tools*)? Necesario para el [ejercicio 5](ejercicios.md#ejercicio-5--darle-una-herramienta-al-investigador). |
+| `function_calling` | `True` | ¿Puede usar herramientas (*tools*)? Necesario para el [ejercicio 5](../clase-01-debate/ejercicios.md#ejercicio-5--darle-una-herramienta-al-investigador). |
 | `json_output` | `True` | ¿Soporta modo JSON? |
-| `structured_output` | `False` | ¿Soporta salida con esquema estricto? |
+| `structured_output` | `False` (clase 01) / `True` (`comun/`) | ¿Soporta salida con esquema estricto? Groq lo soporta con `gpt-oss`; lo usa la práctica 04. |
 | `family` | `"unknown"` | Familia del modelo; AutoGen la usa para ajustes específicos. |
 
+| `multiple_system_messages` | `True` (`comun/`) | ¿Acepta varios mensajes de sistema? Necesario para la memoria (práctica 05). |
+
 Si omitís `model_info`, AutoGen tira error al crear el cliente.
+
+> 💡 La clase 01 arma su propio cliente (es autocontenida). Las prácticas usan el cliente
+> compartido de [`comun/modelos.py`](../comun/modelos.py), que declara todas las capacidades y
+> agrega reintentos ante límites de uso.
 
 ## Modelos
 
@@ -57,7 +63,7 @@ curl -s https://api.groq.com/openai/v1/models -H "Authorization: Bearer $GROQ_AP
 Después cambialos sin tocar código:
 
 ```bash
-GROQ_MODEL=qwen/qwen3.8-27b poetry run python debate_groupchat.py
+GROQ_MODEL=qwen/qwen3.8-27b poetry run python clase-01-debate/debate_groupchat.py
 ```
 
 ### Por qué dos modelos distintos
@@ -76,10 +82,20 @@ desde el `system_message` ("120-180 palabras"), no desde `max_tokens`.
 ## Límites de la capa gratuita
 
 Groq limita las **solicitudes por minuto** y los **tokens por minuto/día** por modelo. Los valores
-exactos cambian; consultalos en <https://console.groq.com/settings/limits>.
+exactos cambian; consultalos en <https://console.groq.com/settings/limits>. Como referencia, al
+armar las prácticas `gpt-oss-20b` tenía un límite de **8000 tokens por minuto**.
 
-Cada turno de este proyecto hace **2 llamadas** (una del moderador + una del agente), así que una
+Cada turno de la clase 01 hace **2 llamadas** (una del moderador + una del agente), así que una
 corrida de 5 turnos son ≈ 10 llamadas. Si ves `429 Too Many Requests`, esperá un minuto.
+El cliente de `comun/` usa `max_retries=6`: ante un 429, el SDK espera lo que indica Groq y
+reintenta solo.
+
+## Incompatibilidades conocidas con AutoGen
+
+| Síntoma | Causa | Parche |
+|---|---|---|
+| 400 `'required' present but 'properties' is missing` | Herramientas `strict=True` sin parámetros (handoffs) | `HandoffGroq` en [`comun/compat.py`](../comun/compat.py) |
+| Sin modelos con visión en la capa gratuita | — | Las prácticas no cubren `MultiModalMessage` |
 
 ## Seguridad de la API key
 

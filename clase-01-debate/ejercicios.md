@@ -4,7 +4,7 @@ Prácticas de dificultad creciente para modificar el proyecto. Cada una indica *
 deberías observar** y una **pista**. Antes de empezar, corré el proyecto una vez tal como está
 para tener una línea de base.
 
-> 💡 Trabajá sobre una copia (`cp debate_groupchat.py mi_debate.py`) para poder comparar.
+> 💡 Trabajá sobre una copia (`cp clase-01-debate/debate_groupchat.py clase-01-debate/mi_debate.py`) para poder comparar.
 
 ---
 
