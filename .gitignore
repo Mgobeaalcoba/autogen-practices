@@ -2,3 +2,5 @@
 .venv/
 __pycache__/
 salidas/
+
+.DS_Store

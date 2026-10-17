@@ -124,3 +124,9 @@ poetry run python practicas/m1-fundamentos/01_cliente_modelo.py
   documenta a propósito.
 - No agregar dependencias a `pyproject.toml` para una sola práctica: indicá el `poetry add` en
   la práctica y en el README del módulo.
+
+## Memoria de sesiones
+
+- memory/STATE.md — foto del estado; memory/LOG.md — historial append-only (no se editan entradas viejas).
+- Puentes: CLAUDE.md, GEMINI.md y .github/copilot-instructions.md apuntan a este archivo.
+- Al cerrar una sesión con cambios: actualizar STATE, agregar la entrada en LOG y commitear (scripts/scan_secrets.py corre como hook pre-commit).
